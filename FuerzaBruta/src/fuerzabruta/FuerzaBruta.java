@@ -7,39 +7,34 @@ package fuerzabruta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
- * @author monic
+ * @author IBrenes
  */
 
 public class FuerzaBruta {
     /**
      *
      */
-
     public static ArrayList<List> allSubsets = new ArrayList<List>();
     static void isSubsetSumZero(int arr[], int n){
 
-        long startTime = System.currentTimeMillis(); // inicio del contador del tiempo
+        double startTime = System.currentTimeMillis(); // timer startup
 
-
-        int a = 2;//asignaciones
-        int c = 0;//comparaciones
-        int l = 0;// lineas ejecutadas
+        int a = 2;// "asignaciones"
+        int c = 0;// "comparaciones"
+        int l = 0;// "lineas ejecutadas"
 
 
         ArrayList<Integer> currentSubset = new ArrayList<>();
-        l++;
         // There are total 2^n subsets
         int total = 1 << n;
-        l++;
         a++;
 
         // Consider all numbers from 0 to 2^n - 1
         for (int i = 0; i < total; i++) {
-
-            l = l+3;
 
             int sum = 0;
 
@@ -51,10 +46,11 @@ public class FuerzaBruta {
             // Consider binary representation of
             // current i to decide which elements
             // to pick.
+
             for (int j = 0; j < n; j++){
                 c = c+2;
+
                 if ((i & (1 << j)) != 0){
-                    l = l+4;
                     currentSubset.add(arr[j]);
                     sum += arr[j];
                     a++;
@@ -63,31 +59,36 @@ public class FuerzaBruta {
             c++;
 
             // Print sum of picked elements.
-            c++;
+            c=c+2;
             if(sum==0 && !currentSubset.isEmpty()){
-                l=l+2;
                 allSubsets.add(currentSubset);
                 //System.out.print(sum + " ");
             }
         }
         c++;
 
+        l=a+c;
+
         System.out.println("asignaciones " + a);
         System.out.println("comparaciones " + c);
         System.out.println("lineas ejecutadas " + l);
-        long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su for
-        System.out.println("tiempo de ejecucion " + endTime + "ms");
+        double endTime = System.currentTimeMillis() - startTime; // The current time at the end of the program
+        System.out.println("tiempo de ejecucion "+endTime+" ms"); // The final print for the system timer
 
     }
+
+
 
  /* Driver program to test above function */
     public static void main(String args[]){
-        int arr[] = new int[] {7,-14,32,2,-66,33,-1,-333};
+
+      Random rd = new Random(); // creating Random object
+      int[] arr = new int[5]; // input the lenght of the array
+      for (int i = 0; i < arr.length; i++) {
+         arr[i] = rd.nextInt(); // storing random integers in an array
+      }
         int n = arr.length;
-
         isSubsetSumZero(arr, n);
-        System.out.println(allSubsets.toString());
-
+        System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
+        }
     }
-
-}
