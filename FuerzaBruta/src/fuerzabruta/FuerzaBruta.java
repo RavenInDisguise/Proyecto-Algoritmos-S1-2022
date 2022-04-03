@@ -19,10 +19,13 @@ public class FuerzaBruta {
      *
      */
     public static ArrayList<List> allSubsets = new ArrayList<List>();
+    
+    
+    
     static void isSubsetSumZero(int arr[], int n){
 
         double startTime = System.currentTimeMillis(); // timer startup
-
+        
         int a = 2;// "asignaciones"
         int c = 0;// "comparaciones"
         int l = 0;// "lineas ejecutadas"
@@ -68,7 +71,7 @@ public class FuerzaBruta {
         c++;
 
         l=a+c;
-
+        
         System.out.println("asignaciones " + a);
         System.out.println("comparaciones " + c);
         System.out.println("lineas ejecutadas " + l);
@@ -88,7 +91,21 @@ public class FuerzaBruta {
          arr[i] = rd.nextInt(); // storing random integers in an array
       }
         int n = arr.length;
+          
+        
+        for (int i = 0; i < arr.length; i++)
+            System.out.println(arr[i]);
+         
+        System.out.println("--------------------Datos aleatorios--------------------");
         isSubsetSumZero(arr, n);
+        System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
+         
+        int[] arrQuemado = new int[]{1344014168,2029559465,-1099414262,-1188743628,783742796};
+        n = arrQuemado.length;
+        
+        
+        System.out.println("--------------------Datos quemados--------------------");
+        isSubsetSumZero(arrQuemado, n);
         System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
         }
     }
