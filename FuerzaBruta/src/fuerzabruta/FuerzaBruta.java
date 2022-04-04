@@ -151,7 +151,7 @@ public class FuerzaBruta {
 
         //Stored data array creation
 
-        int[] arrQuemado = new int[]{-1,1,-2,2-3};
+        int[] arrQuemado = new int[]{-1,1,-2,2,-3};
         int n2 = arrQuemado.length;
 
         //Random data
