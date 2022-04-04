@@ -85,22 +85,6 @@ public class FuerzaBruta {
             Random rd = new Random(); // creating Random object
             int[] arrAleatorio = new int[i]; // input the lenght of the array
 
-<<<<<<< Updated upstream
-        int[] arrQuemado = new int[]{-1,1,-2,2-3};
-        int n2 = arrQuemado.length;
-
-        //Random data
-
-        System.out.println("--------------------Datos aleatorios--------------------");
-        isSubsetSumZeroAleatorio(arr, n);
-        System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
-
-        //Stored data
-
-        System.out.println("--------------------Datos quemados--------------------");
-        isSubsetSumZeroQuemado(arrQuemado, n2);
-        System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
-=======
             for (int j = 0; j < arrAleatorio.length; j++) {
                 arrAleatorio[j] = rd.nextInt(); // storing random integers in an array
             }
@@ -125,7 +109,6 @@ public class FuerzaBruta {
             System.out.println("\nDesempeño del algoritmo con "+n2+" elementos");
             isSubsetSumZero(arrQuemado, n2);
             
->>>>>>> Stashed changes
         }
     }
 }
