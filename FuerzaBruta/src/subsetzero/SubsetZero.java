@@ -120,7 +120,7 @@ public class SubsetZero {
         dp[i][s + arrSize] = isSubsetSumZeroDP(i + 1, s + arr[i], arr, n) + isSubsetSumZeroDP(i + 1, s, arr, n);
  
         // Returning the value
-        return dp[i][s + arrSize];
+        return -1;
     }
   
 //__________________________________________________________________________________________________________________    
