@@ -133,31 +133,8 @@ public class FuerzaBruta {
             Random rd = new Random(); // creating Random object
             int[] arrAleatorio = new int[i]; // input the lenght of the array
 
-            for (int j = 0; j < arrAleatorio.length; j++) {
-                arrAleatorio[j] = rd.nextInt(); // storing random integers in an array
-            }
-            int n = arrAleatorio.length;
-            
-            //Stored data array creation
             int[] arrQuemado = new int[]{-1,1,-2,2,-3};
             int n2 = arrQuemado.length;
-
-            //isSubsetSumZeroDP(0,0,arrQuemado, n2, allSubsets);
-            
-	
-            //System.out.println(allSubsets.toString());
-            /*
-            System.out.println("\n"+"*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*"+"\n");
-            
-            //Random data
-            System.out.println("--------------------Datos aleatorios--------------------");
-            System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
-            isSubsetSumZero(arrAleatorio, n);
-            */
-            int arr[] = {2, 2, 2, -4, -4};
-            int x = arr.length;
- 
-            System.out.println(isSubsetSumZeroDP(0, 0, arr, x));
 
             }
             
