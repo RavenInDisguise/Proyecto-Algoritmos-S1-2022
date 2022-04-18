@@ -5,8 +5,14 @@
  */
 package fuerzabruta;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 /**
  *
  * @author Mónica Alfaro, Ignacio Brenes
@@ -16,7 +22,8 @@ public class FuerzaBruta {
      *
      */
     public static ArrayList<List> allSubsets = new ArrayList<List>();
-
+    public static ArrayList<Integer> currentSubset =  new ArrayList<>();
+    
     static void isSubsetSumZero(int arr[], int n){
 
         allSubsets=new ArrayList<List>();
@@ -27,7 +34,7 @@ public class FuerzaBruta {
         int c = 0;// "comparaciones counter"
         int l = 0;// "lineas ejecutadas counter"
 
-        ArrayList<Integer> currentSubset = new ArrayList<>();
+        currentSubset = new ArrayList<>();
         // There are total 2^n subsets
         int total = 1 << n;
         a++;
@@ -75,11 +82,52 @@ public class FuerzaBruta {
         double endTime = System.currentTimeMillis() - startTime; // The current time at the end of the program
         System.out.println("Tiempo de ejecución: "+endTime+" ms"); // The final print for the system timer
     }
+
+//__________________________________________________________________________________________________________________    
     
+    static int maxSum = 100;
+    static int arrSize = 51;
+ 
+    // variable to store
+    // states of dp
+    static int[][] dp = new int[arrSize][maxSum];
+    static boolean[][] visit = new boolean[arrSize][maxSum];
+ 
+    // To find the number of subsets with sum equal to 0
+    // Since S can be negative, we will maxSum
+    // to it to make it positive
+    static int isSubsetSumZeroDP(int i, int s, int arr[], int n){
+        // Base cases
+        if (i == n){
+            if (s == 0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+ 
+        // Returns the value if a state is already solved
+        if (visit[i][s + arrSize]){
+            return dp[i][s + arrSize];
+        }
+ 
+        // If the state is not visited, then continue
+        visit[i][s + arrSize] = true;
+ 
+        // Recurrence relation
+        dp[i][s + arrSize] = isSubsetSumZeroDP(i + 1, s + arr[i], arr, n) + isSubsetSumZeroDP(i + 1, s, arr, n);
+ 
+        // Returning the value
+        return dp[i][s + arrSize];
+    }
+  
+//__________________________________________________________________________________________________________________    
+   
+      
     /* Driver program to test above function */
     public static void main(String args[]){
 
-        for(int i=3; i<=30;i++){
+        for(int i=3; i<=3;i++){
             
             //Randomdata array creation
             Random rd = new Random(); // creating Random object
@@ -94,21 +142,28 @@ public class FuerzaBruta {
             int[] arrQuemado = new int[]{-1,1,-2,2,-3};
             int n2 = arrQuemado.length;
 
+            //isSubsetSumZeroDP(0,0,arrQuemado, n2, allSubsets);
             
-
+	
+            //System.out.println(allSubsets.toString());
+            /*
             System.out.println("\n"+"*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*"+"\n");
             
             //Random data
             System.out.println("--------------------Datos aleatorios--------------------");
             System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
             isSubsetSumZero(arrAleatorio, n);
+            */
+            int arr[] = {2, 2, 2, -4, -4};
+            int x = arr.length;
+ 
+            System.out.println(isSubsetSumZeroDP(0, 0, arr, x));
+
+            }
             
 
-            //Stored data
-            System.out.println("\n--------------------Datos quemados--------------------");
-            System.out.println("\nDesempeño del algoritmo con "+n2+" elementos");
-            isSubsetSumZero(arrQuemado, n2);
-            
-        }
     }
 }
+
+        
+
