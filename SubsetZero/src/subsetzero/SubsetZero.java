@@ -23,12 +23,12 @@ public class SubsetZero {
      */
 //__________________________________________________________________________________________________________________    
   
-    public static ArrayList<List> allSubsets = new ArrayList<List>();
-    public static ArrayList<Integer> currentSubset =  new ArrayList<>();
+    public static ArrayList<ArrayList<Integer>> allSubsets = new ArrayList<ArrayList<Integer>>();
+    public static ArrayList<ArrayList<Integer>> allSubsets2 = new ArrayList<ArrayList<Integer>>();
     
     static void isSubsetSumZero(int arr[], int n){
-
-        allSubsets=new ArrayList<List>();
+        ArrayList<Integer> currentSubset = new ArrayList<Integer>();
+        allSubsets=new ArrayList<ArrayList<Integer>>();
         double startTime = System.currentTimeMillis(); // timer startup
 
         
@@ -66,9 +66,10 @@ public class SubsetZero {
             }
             c++;
 
-            // Save subsets
+            
             c=c+2;
-            if(sum==0 && !currentSubset.isEmpty()){
+            // Save subsets
+            if(sum==0){
                 allSubsets.add(currentSubset);
                 //System.out.print(sum + " ");
             }
@@ -84,7 +85,7 @@ public class SubsetZero {
         double endTime = System.currentTimeMillis() - startTime; // The current time at the end of the program
         System.out.println("Tiempo de ejecución: "+endTime+" ms"); // The final print for the system timer
     }
-
+    
 //__________________________________________________________________________________________________________________    
     
     static int maxSum = 100;
@@ -95,19 +96,54 @@ public class SubsetZero {
     static int[][] dp = new int[arrSize][maxSum];
     static boolean[][] visit = new boolean[arrSize][maxSum];
  
+    
+    static void printSubsets(){
+       boolean sameValues=false;
+       boolean sameValuesAdded=false;
+       
+       for (int x=0; x < allSubsets.size(); x++) {
+            int sum=0;
+            for (int y=0; y < allSubsets.get(x).size(); y++) {
+                 ArrayList<Integer> actualList=allSubsets.get(x);
+                 sum+=actualList.get(y);
+                 if(Math.abs(actualList.get(0))== Math.abs(actualList.get(0)) && allSubsets.get(x).size()==2){
+                    sameValues=true;
+                 } else{
+                    sameValues=false;
+                 } 
+            }
+            if(sum==0){
+                if(sameValues && !sameValuesAdded){
+                    allSubsets2.add(allSubsets.get(x));
+                    sameValuesAdded=true;
+                }else if(!sameValues){
+                    allSubsets2.add(allSubsets.get(x));
+                }
+            }
+
+
+        }
+        System.out.println(allSubsets2.toString());
+    }
+    
+    
     // To find the number of subsets with sum equal to 0
     // Since S can be negative, we will maxSum
     // to it to make it positive
-    static int isSubsetSumZeroDP(int i, int s, int arr[], int n){
+    static int isSubsetSumZeroDP(int i, int s, ArrayList<Integer> currentSubset, int arr[], int n){
+        
         // Base cases
         if (i == n){
             if (s == 0){
+                allSubsets.add(currentSubset);
                 return 1;
             }else{
                 return 0;
             }
         }
- 
+        
+        allSubsets.add(currentSubset);
+        
         // Returns the value if a state is already solved
         if (visit[i][s + arrSize]){
             return dp[i][s + arrSize];
@@ -117,10 +153,17 @@ public class SubsetZero {
         visit[i][s + arrSize] = true;
  
         // Recurrence relation
-        dp[i][s + arrSize] = isSubsetSumZeroDP(i + 1, s + arr[i], arr, n) + isSubsetSumZeroDP(i + 1, s, arr, n);
- 
-        // Returning the value
+        ArrayList<Integer> currentSubset2 =  new ArrayList<>();
+        currentSubset2=(ArrayList<Integer>) currentSubset.clone();
+        currentSubset.add(arr[i]);
+        dp[i][s + arrSize] = isSubsetSumZeroDP(i + 1, s + arr[i], currentSubset, arr, n) 
+                + isSubsetSumZeroDP(i + 1, s, currentSubset2, arr, n);
+        
+        // End recursion
         return -1;
+        
+        // Returning the value
+        //return dp[i][s + arrSize];
     }
   
 //__________________________________________________________________________________________________________________    
@@ -128,12 +171,10 @@ public class SubsetZero {
       
     /* Driver program to test above function */
     public static void main(String args[]){
-
+       
         int min = -15; //parametros para el minimo del numero aleatorio
         int max = 15; //parametros para el maximo del numero aleatorio
-
-        System.out.println("====================EJECUCION ALGORITMO FUERZA BRUTA================================\n\n");
-
+        
         for(int i=3; i <= 20;i++){
 
             //Randomdata array creation
@@ -144,8 +185,19 @@ public class SubsetZero {
                 arrAleatorio[j] = rd.nextInt(max-min+1) + min; // storing random integers in an array
 
             }
+            
+            System.out.println("====================EJECUCION ALGORITMO PROGRAMACIÓN DINÁMICA================================\n\n");
 
             int n = arrAleatorio.length;
+            ArrayList<Integer> currentSubset =  new ArrayList<>();
+            int arr[] = {-5, 1, 2, 3, 4, 5, 30};
+            int arrSize = arr.length;
+            isSubsetSumZeroDP(0,0,currentSubset,arr,arrSize);
+            printSubsets();
+
+            System.out.println("\n====================EJECUCION ALGORITMO FUERZA BRUTA================================\n\n");
+
+        
 
             //Random data
             System.out.println("--------------------Datos aleatorios--------------------");
@@ -154,7 +206,7 @@ public class SubsetZero {
 
         }
 
-                    //Stored data array creation
+            //Stored data array creation
             int[] arrQuemado3 = new int[]{-1,1,-2};
             int n3 = arrQuemado3.length;
 
@@ -237,12 +289,10 @@ public class SubsetZero {
             System.out.println("\n--------------------15 Datos quemados--------------------");
             System.out.println("\nDesempeño del algoritmo con "+n15+" elementos");
             isSubsetSumZero(arrQuemado15, n15);
-
+          
             System.out.println("\n--------------------20 Datos quemados--------------------");
             System.out.println("\nDesempeño del algoritmo con "+n20+" elementos");
             isSubsetSumZero(arrQuemado20, n20);
-
-
     }
 }
 
