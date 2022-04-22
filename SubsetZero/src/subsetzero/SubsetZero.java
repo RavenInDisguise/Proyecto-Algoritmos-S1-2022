@@ -29,21 +29,21 @@ public class SubsetZero {
     */
     
     static void isSubsetSumZero(int arr[], int n){
-        ArrayList<Integer> currentSubset = new ArrayList<Integer>();
+        ArrayList<Integer> currentSubset = new ArrayList<Integer>(); 
+        //Array para almacenar el subset que se está calculado actualmente
         allSubsets=new ArrayList<ArrayList<Integer>>();
-        double startTime = System.currentTimeMillis(); // timer startup
+        double startTime = System.currentTimeMillis(); 
+        //Inicio del timer
 
 
-        int a = 2;// "asignaciones counter"
-        int c = 0;// "comparaciones counter"
-        int l = 0;// "lineas ejecutadas counter"
+        int a = 2;// Contador de asignaciones
+        int c = 0;// Contador de comparaciones 
+        int l = 0;// Contador de líneas ejecutadas
 
-        currentSubset = new ArrayList<>();
-        // There are total 2^n subsets
-        int total = 1 << n;
+        int total = 1 << n; //Cálculo del total de subsets a calcular o sea, 2^n
         a++;
 
-        // Consider all numbers from 0 to 2^n - 1
+        //Considere todos los números de 0 a 2^n - 1
         for (int i = 0; i < total; i++) {
 
             int sum = 0;
@@ -51,18 +51,15 @@ public class SubsetZero {
             c++;
             a++;
 
-            currentSubset = new ArrayList<>();
-
-            // Consider binary representation of
-            // current i to decide which elements
-            // to pick.
-
+            currentSubset = new ArrayList<>(); //Se actualiza el currentSubset cada que sale del primer for
+            
+            //Considere la representación binaria del i actual para decidir cuáles elementos escgoer
             for (int j = 0; j < n; j++){
                 c = c+2;
 
                 if ((i & (1 << j)) != 0){
-                    currentSubset.add(arr[j]);
-                    sum += arr[j];
+                    currentSubset.add(arr[j]); //Salva el subset actual utilizado
+                    sum += arr[j]; //Se suman los valores del currentSubset
                     a++;
                 }
             }
@@ -71,15 +68,15 @@ public class SubsetZero {
 
             c=c+2;
             // Save subsets
-            if(sum==0){
-                allSubsets.add(currentSubset);
-                //System.out.print(sum + " ");
+            if(sum==0){ //Si la suma total del subset es cero
+                allSubsets.add(currentSubset); //Se agrega al array de subsets cuya suma es cero
             }
         }
         c++;
 
         l=a+c;
 
+        //Impresiones de los resultados
         System.out.println(allSubsets.toString());
         System.out.println("Asignaciones: " + a);
         System.out.println("Comparaciones: " + c);
@@ -90,26 +87,29 @@ public class SubsetZero {
 
 //__________________________________________________________________________________________________________________
 
-    static int maxSum = 100;
-    static int arrSize = 51;
-
-    // variable to store
-    // states of dp
+    //Para encontrar los subsets con suma igual a 0
+    //ya que la suma puede ser negativa, vamos a utilizar maxSum
+    //para hacerla positiva
+    static int maxSum = 100; //Tamaño de la matriz
+    static int arrSize = 51; //Tamaño de la matriz
+    
     static int[][] dp = new int[arrSize][maxSum];
+    //Matriz para almacenar los estados de la suma actual 
     static boolean[][] visit = new boolean[arrSize][maxSum];
+    //Matriz para almacenar si los estados de la suma actual ya fueron calculados 
 
     /*
-    ~Función encargada de realizar el algoritmo de fuerza bruta para encontrar los 
+    ~Función encargada de imprimir los subsets del algoritmo de programación dinámica para encontrar los 
     subconjuntos cuya suma equivale a cero.
-    ~Datos que recibe: El array, el tamaño del array.
+    ~Datos que recibe: Nada.
     ~Datos que retorna: Ninguno. 
     */
     static void printSubsets(){
-       boolean sameValues=false;
-       boolean sameValuesAdded=false;
-       int valueUsed=-16;
+       boolean sameValues=false; //Bandera para saber si ya se utilizaron valores iguales. Ej: |3|=|3|
+       boolean sameValuesAdded=false; //Bandera para saber si se agregaron esos valores al array
+       int valueUsed=-16; //Variable para saber si el valor ya se ha agregado anteriormente
        
-       allSubsets2.clear();
+       allSubsets2.clear(); //Se limpia el subset2 auxiliar de la función
                
        for (int x=0; x < allSubsets.size(); x++) {
             int sum=0;
@@ -117,7 +117,10 @@ public class SubsetZero {
                  ArrayList<Integer> actualList=allSubsets.get(x);
                  sum+=actualList.get(y);
                  if(allSubsets.get(x).size()==2 && Math.abs(actualList.get(0))== Math.abs(actualList.get(1))
-                         && Math.abs(actualList.get(0))!=valueUsed){
+                         && Math.abs(actualList.get(0))!=valueUsed){ 
+                     //Si el subset analizado tiene un tamaño 2 
+                     //Si al calcular el valor absoluto son iguales
+                     //Si el valor es diferente a la variable
                     sameValues=true;
                     valueUsed=Math.abs(actualList.get(0));
                  } else{
@@ -125,11 +128,11 @@ public class SubsetZero {
                  } 
             }
             if(sum==0){
-                if(sameValues && !sameValuesAdded){
+                if(sameValues && !sameValuesAdded){ //Si es el mismo valor (3=3) y no ha sido agregado
                     allSubsets2.add(allSubsets.get(x));
                     sameValuesAdded=true;
                     //sameValues=false;
-                }else if(!sameValues){
+                }else if(!sameValues){ //Sino sólo procede a agregar el subset, ya que la suma es cero
                     allSubsets2.add(allSubsets.get(x));
                     sameValues=false;
                 }
@@ -141,28 +144,24 @@ public class SubsetZero {
         allSubsets2.remove(allSubsets2.size()-1);
         System.out.println(allSubsets2.toString());
     }
-   
-    static int a2 = 6;// "asignaciones counter"
-    static int c2 = 0;// "comparaciones counter"
-
-    // To find the number of subsets with sum equal to 0
-    // Since S can be negative, we will maxSum
-    // to it to make it positive
     
+   
+    static int a2 = 6;// Contador de asignaciones
+    static int c2 = 0;// Contador de comparaciones
     /*
-    ~Función encargada de realizar el algoritmo de fuerza bruta para encontrar los 
+    ~Función encargada de realizar el algoritmo de programación dinámica para encontrar los 
     subconjuntos cuya suma equivale a cero.
-    ~Datos que recibe: El array, el tamaño del array.
-    ~Datos que retorna: Ninguno. 
+    ~Datos que recibe: i, sum, el array actual, el array a calcular, el tamaño de ese array
+    ~Datos que retorna: Enteros 1, 0, -1. 
     */
-    static int isSubsetSumZeroDP(int i, int s, ArrayList<Integer> currentSubset, int arr[], int n){
+    static int isSubsetSumZeroDP(int i, int sum, ArrayList<Integer> currentSubset, int arr[], int n){
 
-        // Base cases
+        //Casos base de parada
         c2++;
-        if (i == n){
+        if (i == n){ //Si la i llega a ser del mismo tamaño que el largo del array
             c2++;
-            if (s == 0){
-                allSubsets.add(currentSubset);
+            if (sum == 0){ //Y la suma es 0
+                allSubsets.add(currentSubset); //Se agrega el valor al currentSubset
                 a2++;
                 return 1;
             }else{
@@ -170,76 +169,77 @@ public class SubsetZero {
             }
         }
 
-        allSubsets.add(currentSubset);
+        allSubsets.add(currentSubset); //Se agrega el valor al currentSubset
         a2++;
 
-        // Returns the value if a state is already solved
+        // Retorna el valor si el estado ya fue visitado
         c2++;
-        if (visit[i][s + arrSize]){
-            return dp[i][s + arrSize];
+        if (visit[i][sum + arrSize]){
+            return dp[i][sum + arrSize];
         }
 
-        // If the state is not visited, then continue
-        visit[i][s + arrSize] = true;
+        //Si el estado no ha sido visitado, entonces continúa el proceso
+        visit[i][sum + arrSize] = true;
         a2++;
 
-        // Recurrence relation
-        ArrayList<Integer> currentSubset2 =  new ArrayList<>();
+        //Relación de recurrencia y almacenamiento de subsets
+        ArrayList<Integer> currentSubset2 =  new ArrayList<>(); //Subset auxiliar de almacenamiento
         a2++;
-        currentSubset2=(ArrayList<Integer>) currentSubset.clone();
+        currentSubset2=(ArrayList<Integer>) currentSubset.clone(); //Guarda subset actual
         a2++;
-        currentSubset.add(arr[i]);
+        currentSubset.add(arr[i]); //Guarda subset actual con el siguiente elemento guardado
         a2++;
-        dp[i][s + arrSize] = isSubsetSumZeroDP(i + 1, s + arr[i], currentSubset, arr, n)
-                + isSubsetSumZeroDP(i + 1, s, currentSubset2, arr, n);
+        dp[i][sum + arrSize] = isSubsetSumZeroDP(i + 1, sum + arr[i], currentSubset, arr, n)
+                + isSubsetSumZeroDP(i + 1, sum, currentSubset2, arr, n);
         a2++;
 
-        // End recursion
-
+        // Termina la recursión
         return -1;
-
-
-
-        // Returning the value
+    
         //return dp[i][s + arrSize];
     }
     
+    
     /*
-    ~Función encargada de realizar el algoritmo de fuerza bruta para encontrar los 
-    subconjuntos cuya suma equivale a cero.
-    ~Datos que recibe: El array, el tamaño del array.
+    ~Función encargada de imprimir los resultados de las asignaciones, comparaciones, líneas ejecutadas, tiempo.
+    ~Datos que recibe: El valor de las asignaciones, el valor de comparaciones, el valor del tiempo de inicio.
     ~Datos que retorna: Ninguno. 
     */
     static void printAC(int a, int c, double startTime2){
-
+        //Impresiones de los resultados
         System.out.println("Asignaciones: " + a);
         System.out.println("Comparaciones: " + c);
         System.out.println("Lineas ejecutadas: " + (a+c));
         double endTime2 = System.currentTimeMillis() - startTime2; // The current time at the end of the program
         System.out.println("Tiempo de ejecución: "+endTime2+" ms"); // The final print for the system timer
     }
-
+        
 //__________________________________________________________________________________________________________________
 
 
-    /* Driver program to test above function */
+    /* Driver program  */
     public static void main(String args[]){
 
-        int min = -15; //parametros para el minimo del numero aleatorio
-        int max = 15; //parametros para el maximo del numero aleatorio
+        int min = -15; //Parámetros para el mínimo del número aleatorio
+        int max = 15; //Parámetros para el máximo del número aleatorio
 
         for(int i=3; i <= 21;i++){
 
-            //Randomdata array creation
-            Random rd = new Random(); // creating Random object
-            int[] arrAleatorio = new int[i]; // input the lenght of the array
+            //Creación del array aleatorio
+            Random rd = new Random(); //Creación de un objeto Random
+            int[] arrAleatorio = new int[i]; //Se genera un array del tamaño i
 
             for (int j = 0; j < arrAleatorio.length; j++) {
-                arrAleatorio[j] = rd.nextInt(max-min+1) + min; // storing random integers in an array
+                arrAleatorio[j] = rd.nextInt(max-min+1) + min; //Guardar enteros aleatorios en el array
             }
 
             int n = arrAleatorio.length;
 
+            System.out.println("====================EJECUCION ALGORITMO FUERZA BRUTA================================\n");
+            System.out.println("--------------------Datos aleatorios--------------------");
+            System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
+            isSubsetSumZero(arrAleatorio, n);
+            
             System.out.println("====================EJECUCION ALGORITMO PROGRAMACIÓN DINÁMICA================================\n");
             //Random data
             System.out.println("--------------------Datos aleatorios--------------------");
@@ -249,16 +249,8 @@ public class SubsetZero {
             isSubsetSumZeroDP(0,0,currentSubset,arrAleatorio, n);
             printSubsets();
             printAC(a2, c2, startTime2);
-
-            System.out.println("====================EJECUCION ALGORITMO FUERZA BRUTA================================\n");
-
-            //Random data
-            System.out.println("--------------------Datos aleatorios--------------------");
-            System.out.println("\nDesempeño del algoritmo con "+n+" elementos");
-            isSubsetSumZero(arrAleatorio, n);
         }
 
-            //Stored data array creation
             int[] arrQuemado3 = new int[]{-1,1,-2};
             int n3 = arrQuemado3.length;
 
